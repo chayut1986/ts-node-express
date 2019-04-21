@@ -2,26 +2,23 @@ import * as Knex from 'knex';
 
 export class DepartmentModel {
 
-    getDepartmentList(db: Knex) {
-        return db('departments')
-            .orderBy('department_id', 'ASC');
-
+    getDepartment(db: Knex) {
+        return db('departments').orderBy('department_name', 'DESC');
     }
 
     addDepartment(db: Knex, data: any) {
-        return db('departments')
-            .insert(data);
+        return db('departments').insert(data);
     }
 
-    updateDepartment(db: Knex, departmentId: any, depertmentName: any) {
+    updateDepartment(db: Knex, departmentId: any, departmentName: any) {
         return db('departments')
-            .where('deparitment_id', departmentId)
-            .update({ department_name: depertmentName });
+            .where('department_id', departmentId)
+            .update({ department_name: departmentName });
     }
-
 
     deleteDepartment(db: Knex, departmentId: any) {
         return db('departments')
+            .where('department_id', departmentId)
             .del();
     }
 }
