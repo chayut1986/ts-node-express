@@ -24,6 +24,20 @@ router.get('/', async (req: Request, res: Response) => {
 
 });
 
+router.get('/', async (req: Request, res: Response) => {
+
+    let db = req.db;
+
+    try {
+        let rs = await departmentModel.getDepartmentList(db);
+        res.send({ ok: true, rows: rs });
+    } catch (error) {
+        res.send({ ok: false, error: error.message });
+    }
+
+
+});
+
 
 
 export default router;

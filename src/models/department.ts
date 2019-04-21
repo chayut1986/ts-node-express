@@ -14,14 +14,14 @@ export class DepartmentModel {
     }
 
     updateDepartment(db: Knex, departmentId: any, depertmentName: any) {
-        return db('department')
+        return db('departments')
             .where('deparitment_id', departmentId)
             .update({ department_name: depertmentName });
     }
 
 
     deleteDepartment(db: Knex, departmentId: any) {
-        return db('department')
+        return db('departments')
             .del();
     }
 }
