@@ -1,4 +1,4 @@
-
+/// <reference path="../../typings.d.ts" />
 
 import * as express from 'express';
 import { Router, Request, Response } from 'express';

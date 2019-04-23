@@ -19,6 +19,7 @@ import { Jwt } from './models/jwt';
 import indexRoute from './routes/index';
 import loginRoute from './routes/login';
 import requestRoute from './routes/request';
+import categoriesRoute from './routes/categories';
 import departmentRoute from './routes/departments';
 
 // Assign router to the express.Router() instance
@@ -98,6 +99,7 @@ app.use('/login', loginRoute);
 // app.use('/api', checkAuth, requestRoute);
 app.use('/request', checkAuth, requestRoute);
 app.use('/departments', departmentRoute);
+app.use('/categories', categoriesRoute);
 app.use('/', indexRoute);
 
 //error handlers
