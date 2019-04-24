@@ -74,6 +74,7 @@ router.post('/', async (req: Request, res: Response) => {
   let cause = req.body.cause;
   let categoryId = req.body.categoryId;
   let remark = req.body.remark;
+
   // from token
   let customerId = req.decoded.id;
 
@@ -109,8 +110,9 @@ router.put('/:requestId', async (req: Request, res: Response) => {
 
   let data: any = {};
   data.request_cause = cause;
-  data.remark = remark;
   data.request_category_id = categoryId;
+  data.remark = remark;
+
 
   try {
     await requestModel.updateRequest(req.db, data, requestId);
