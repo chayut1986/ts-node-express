@@ -90,6 +90,7 @@ router.post('/', async (req: Request, res: Response) => {
   data.request_category_id = categoryId;
 
   try {
+    // let db = req.db;
     await requestModel.saveRequest(req.db, data);
     res.send({ ok: true, code: HttpStatus.OK });
   } catch (error) {

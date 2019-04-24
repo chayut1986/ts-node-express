@@ -96,10 +96,10 @@ let checkAuth = (req: Request, res: Response, next: NextFunction) => {
 }
 
 app.use('/login', loginRoute);
-// app.use('/api', checkAuth, requestRoute);
+//app.use('/api', checkAuth, requestRoute);
 app.use('/request', checkAuth, requestRoute);
 app.use('/departments', departmentRoute);
-app.use('/categories', categoriesRoute);
+app.use('/categories', checkAuth, categoriesRoute);
 app.use('/', indexRoute);
 
 //error handlers
