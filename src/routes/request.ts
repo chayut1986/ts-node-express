@@ -14,7 +14,7 @@ const router: Router = Router();
 router.get('/', async (req: Request, res: Response) => {
   let db = req.db;
   let customerId = req.decoded.id;
-  let limit = +req.query.limit || 10;
+  let limit = +req.query.limit || 50;
   let offset = +req.query.offset || 0;
 
   try {
