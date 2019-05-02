@@ -73,7 +73,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 
 let checkAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.decoded.userType === 'admin') {
+  if (req.decoded.userTypeName === 'Admin') {
     next();
   } else {
     res.send({ ok: false, error: 'ไม่มีสิทธิ์เข้าใช้งาน' });
@@ -82,7 +82,7 @@ let checkAdmin = (req: Request, res: Response, next: NextFunction) => {
 }
 
 let checkStaff = (req: Request, res: Response, next: NextFunction) => {
-  if (req.decoded.userType === 'staff') {
+  if (req.decoded.userTypeName === 'User') {
     next();
   } else {
     res.send({ ok: false, error: 'ไม่มีสิทธิ์เข้าใช้งาน' });

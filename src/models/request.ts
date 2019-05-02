@@ -21,10 +21,10 @@ export class RequestModel {
     return db('requests').where('request_id', requestId);
   }
 
-  getList(db: Knex, customerId: any, limit: number, offset: number) {
+  getList(db: Knex, userId: any, limit: number, offset: number) {
     return db('requests as r')
       .select('r.*', 'rc.request_category_name', 'rs.request_status_name', 'rs.color')
-      .where('r.customer_id', customerId)
+      .where('r.user_id', userId)
       .leftJoin('request_categories as rc', 'rc.request_category_id', 'r.request_category_id')
       .leftJoin('request_status as rs', 'rs.request_status_id', 'r.request_status_id')
       .limit(limit)
@@ -32,17 +32,17 @@ export class RequestModel {
       .orderBy('r.request_date');
   }
 
-  getTotal(db: Knex, customerId: any) {
-    return db('requests').where('customer_id', customerId)
+  getTotal(db: Knex, userId: any) {
+    return db('requests').where('user_id', userId)
       .select(db.raw('count(*) as total'));
   }
 
   getRequestLogs(db: Knex, requestId: any) {
     let sql = `
-    select l.*, t.first_name, t.last_name
-    from request_logs as l
-    inner join technicians as t on t.technician_id=l.technician_id
-    where l.request_id=?
+    select l.*, u.first_name, u.last_name
+    from request_logs as rl
+    inner join users as u on u.user_id=rl.user_id
+    where rl.request_id=?
     `;
 
     return db.raw(sql, [requestId]);

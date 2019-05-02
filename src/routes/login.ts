@@ -18,7 +18,7 @@ router.post('/', async (req: Request, res: Response) => {
   let db = req.db;
   let username: string = req.body.username;
   let password: string = req.body.password;
-  let typeId: string = req.body.typeId;
+  //let userTypeId: string = req.body.user_type_id;
 
   let encPassword = crypto
     .createHash('md5')
@@ -28,29 +28,18 @@ router.post('/', async (req: Request, res: Response) => {
   let token: any = null;
   let isError: boolean = false;
 
-  if (typeId == '1') { // admin
-    let rs: any = await loginModel.doTechnicianLogin(db, username, encPassword);
-    if (rs.length) {
-      let playload: any = {};
-      playload.id = rs[0].technician_id;
-      playload.fullname = rs[0].first_name + ' ' + rs[0].last_name;
-      playload.userType = 'admin';
 
-      token = jwt.sign(playload);
-    } else {
-      isError = true;
-    }
-  } else { // staff
-    let rs: any = await loginModel.doCustomerLogin(db, username, encPassword);
-    if (rs.length) {
-      let playload: any = {};
-      playload.id = rs[0].customer_id;
-      playload.fullname = rs[0].first_name + ' ' + rs[0].last_name;
-      playload.userType = 'staff';
-      token = jwt.sign(playload);
-    } else {
-      isError = true;
-    }
+  let rs: any = await loginModel.doLogin(db, username, encPassword);
+  if (rs.length) {
+    let playload: any = {};
+    playload.id = rs[0].user_id;
+    playload.fullname = rs[0].first_name + ' ' + rs[0].last_name;
+    playload.userTypeName = rs[0].user_type_name;
+    playload.userTypeId = rs[0].user_type_id;
+    token = jwt.sign(playload);
+
+  } else {
+    isError = true;
   }
 
   if (isError) {
@@ -62,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 //  staff
-router.post('/customer', async (req: Request, res: Response) => {
+router.post('/user', async (req: Request, res: Response) => {
   let username: string = req.body.username;
   let password: string = req.body.password;
 
@@ -70,14 +59,14 @@ router.post('/customer', async (req: Request, res: Response) => {
 
   try {
     let encPassword = crypto.createHash('md5').update(password).digest('hex');
-    let rs: any = await loginModel.doCustomerLogin(db, username, encPassword);
+    let rs: any = await loginModel.doLogin(db, username, encPassword);
 
     if (rs.length) {
 
       let payload = {
         fullname: `${rs[0].first_name} ${rs[0].last_name}`,
-        id: rs[0].customer_id,
-        userType: 'staff'
+        id: rs[0].user_id,
+        userTypeName: 'User'
       }
 
       let token = jwt.sign(payload);
@@ -92,7 +81,7 @@ router.post('/customer', async (req: Request, res: Response) => {
 });
 
 // admin
-router.post('/technician', async (req: Request, res: Response) => {
+router.post('/admin', async (req: Request, res: Response) => {
   let username: string = req.body.username;
   let password: string = req.body.password;
 
@@ -100,14 +89,14 @@ router.post('/technician', async (req: Request, res: Response) => {
 
   try {
     let encPassword = crypto.createHash('md5').update(password).digest('hex');
-    let rs: any = await loginModel.doTechnicianLogin(db, username, encPassword);
+    let rs: any = await loginModel.doLogin(db, username, encPassword);
 
     if (rs.length) {
 
       let payload = {
         fullname: rs[0].fullname,
         username: username,
-        userType: 'admin'
+        userType: 'Admin'
       }
 
       let token = jwt.sign(payload);
