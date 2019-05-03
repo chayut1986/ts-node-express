@@ -18,14 +18,20 @@ import { Jwt } from './models/jwt';
 
 import indexRoute from './routes/index';
 import loginRoute from './routes/login';
+import userRoute from './routes/user';
 import requestRoute from './routes/request';
 import categoriesRoute from './routes/categories';
 import departmentRoute from './routes/departments';
 
+
+
 // Assign router to the express.Router() instance
-const app: express.Application = express();
+const app: express.Express = express();
 
 const jwt = new Jwt();
+
+
+
 
 //view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -115,6 +121,7 @@ let checkAuth = (req: Request, res: Response, next: NextFunction) => {
 }
 
 app.use('/login', loginRoute);
+app.use('/user', userRoute);
 //app.use('/api', checkAuth, requestRoute);
 app.use('/request', checkAuth, checkStaff, requestRoute);
 app.use('/departments', checkAuth, departmentRoute);
