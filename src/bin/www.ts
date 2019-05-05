@@ -5,7 +5,12 @@ import * as http from 'http';
 const port = normalizePort(+process.env.PORT || 3000);
 app.set('port', port);
 
+
+
 var server = http.createServer(app);
+
+var io = app.io;
+io.attach(server);
 
 server.listen(port, onListening);
 server.on('error', onError);

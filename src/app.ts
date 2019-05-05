@@ -24,13 +24,39 @@ import categoriesRoute from './routes/categories';
 import departmentRoute from './routes/departments';
 
 
+const socketIo = require('socket.io');
+
+const io = socketIo();
+
 
 // Assign router to the express.Router() instance
-const app: express.Express = express();
+const app: express.Application = express();
 
 const jwt = new Jwt();
 
+app.io = io;
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  req.io = io;
+  next();
+})
+
+io.on('connection', (socket: any) => {
+  console.log('User connected!');
+
+  socket.on('welcome', (data: any) => {
+    // response
+    console.log(data);
+    io.emit('welcome-callback', 'Testttttttt')
+  });
+
+  socket.on('adduser', (data) => {
+    console.log('Add user!')
+    // response
+    io.emit('added-user', 'Server response: ' + data);
+  });
+
+});
 
 
 //view engine setup
