@@ -165,8 +165,8 @@ router.delete('/users/:userId', async (req: Request, res: Response) => {
   let db = req.db;
   try {
     let userId = req.params.userId;
-    req.io.emit('removed-user');
-    req.io.emit('change-graph');
+    // req.io.emit('removed-user');
+    // req.io.emit('change-graph');
     await userModel.removeUser(db, userId);
     res.send({ ok: true })
   } catch (error) {

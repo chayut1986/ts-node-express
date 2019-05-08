@@ -70,14 +70,14 @@ export class UserModel {
       .where('user_id', userId); // SELECT * FROM users WHERE user_id=xxx
   }
 
-  doLogin(db: Knex, username: any, password: any) {
-    return db('users')
-      .select('user_id', db.raw('concat(first_name, " ", last_name) as fullname'))
-      .where({
-        username: username,
-        password: password
-      });
-  }
+  // doLogin(db: Knex, username: any, password: any) {
+  //   return db('users')
+  //     .select('user_id', db.raw('concat(first_name, " ", last_name) as fullname'))
+  //     .where({
+  //       username: username,
+  //       password: password
+  //     });
+  // }
 
 }
 
