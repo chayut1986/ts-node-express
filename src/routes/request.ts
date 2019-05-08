@@ -14,11 +14,11 @@ const router: Router = Router();
 router.get('/', async (req: Request, res: Response) => {
   let db = req.db;
   let userId = req.decoded.id;
-  let limit = +req.query.limit || 50;
-  let offset = +req.query.offset || 0;
+  //  let limit = +req.query.limit || 50;
+  //  let offset = +req.query.offset || 0;
 
   try {
-    let rs: any = await requestModel.getList(db, userId, limit, offset);
+    let rs: any = await requestModel.getList(db, userId);  //, limit, offset
     let rsTotal: any = await requestModel.getTotal(db, userId);
     console.log(rsTotal[0].total);
     res.send({ ok: true, rows: rs, total: rsTotal[0].total });

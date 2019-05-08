@@ -21,14 +21,14 @@ export class RequestModel {
     return db('requests').where('request_id', requestId);
   }
 
-  getList(db: Knex, userId: any, limit: number, offset: number) {
+  getList(db: Knex, userId: any) {  // , limit: number, offset: number
     return db('requests as r')
       .select('r.*', 'rc.request_category_name', 'rs.request_status_name', 'rs.color')
       .where('r.user_id', userId)
       .leftJoin('request_categories as rc', 'rc.request_category_id', 'r.request_category_id')
       .leftJoin('request_status as rs', 'rs.request_status_id', 'r.request_status_id')
-      .limit(limit)
-      .offset(offset)
+      // .limit(limit)
+      // .offset(offset)
       .orderBy('r.request_date');
   }
 
