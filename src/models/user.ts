@@ -66,9 +66,10 @@ export class UserModel {
 
   getDetail(db: Knex, userId: any) {
     return db('users')
-      .select('user_id', 'username', 'first_name', 'last_name', 'user_type_id', 'is_active')
       .where('user_id', userId); // SELECT * FROM users WHERE user_id=xxx
   }
+
+
 
   // doLogin(db: Knex, username: any, password: any) {
   //   return db('users')

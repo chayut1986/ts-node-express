@@ -4,7 +4,7 @@ import * as express from 'express';
 import { Router, Request, Response } from 'express';
 import * as HttpStatus from 'http-status-codes';
 import * as crypto from 'crypto';
-
+import * as moment from 'moment';
 import { UserModel, UserTypeModel } from '../models/user';
 
 import { Jwt } from '../models/jwt';
@@ -100,8 +100,9 @@ router.post('/users', async (req: Request, res: Response) => {
   let password = req.body.password;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
+  let birth = moment(req.body.birth).format('YYYY-MM-DD');
   let isActive = req.body.isActive;
-  let userTypeId = req.body.userType;
+  let userTypeId = req.body.userTypeId;
 
   if (username && password && firstName && lastName) {
     let encPassword = crypto.createHash('md5').update(password).digest('hex');
@@ -111,6 +112,7 @@ router.post('/users', async (req: Request, res: Response) => {
       password: encPassword,
       first_name: firstName,
       last_name: lastName,
+      birth: birth,
       is_active: isActive,
       user_type_id: userTypeId
     }
