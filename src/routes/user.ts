@@ -29,6 +29,18 @@ router.get('/users', async (req: Request, res: Response) => {
 
 })
 
+
+router.get('/sex', async (req: Request, res: Response) => {
+  let db = req.db;
+  try {
+    let rs = await userModel.getSex(db);
+    res.send({ ok: true, rows: rs });
+  } catch (error) {
+    res.send({ ok: false, error: error.message });
+  }
+
+})
+
 // localhost:8080/api/users
 router.get('/users/:userId', async (req: Request, res: Response) => {
   let db = req.db;
@@ -100,7 +112,9 @@ router.post('/users', async (req: Request, res: Response) => {
   let password = req.body.password;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
+  let sexTypeId = req.body.sexTypeId;
   let birth = moment(req.body.birth).format('YYYY-MM-DD');
+  // let birth = moment(req.body.birth).format();
   let isActive = req.body.isActive;
   let userTypeId = req.body.userTypeId;
 
@@ -112,6 +126,7 @@ router.post('/users', async (req: Request, res: Response) => {
       password: encPassword,
       first_name: firstName,
       last_name: lastName,
+      sex: sexTypeId,
       birth: birth,
       is_active: isActive,
       user_type_id: userTypeId
@@ -133,19 +148,23 @@ router.post('/users', async (req: Request, res: Response) => {
 router.put('/users/:userId', async (req: Request, res: Response) => {
   let db = req.db;
   let userId = req.params.userId;
-
+  let username = req.body.username;
   let password = req.body.password;
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
+  let sexTypeId = req.body.sexTypeId;
+  let birth = moment(req.body.birth).format('YYYY-MM-DD');
   let isActive = req.body.isActive;
-  let userTypeId = req.body.userType;
+  let userTypeId = req.body.userTypeId;
 
   if (userId && firstName && lastName) {
 
     let user: any = {
       first_name: firstName,
       last_name: lastName,
+      sex: sexTypeId,
       is_active: isActive,
+      birth: birth,
       user_type_id: userTypeId
     }
 

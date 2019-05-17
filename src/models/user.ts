@@ -4,8 +4,11 @@ import * as Knex from 'knex';
 export class UserModel {
   getUsers(db: Knex) {
     return db('users as u')
-      .select('u.user_id', 'u.birth', 'u.sex', 'u.is_active', 'u.username', 'u.first_name', 'u.last_name', 'ut.user_type_name')
+      .select('u.user_id', 'u.birth', 'u.sex', 'u.is_active', 'u.username', 'u.first_name', 'u.last_name', 's.name', 'ut.user_type_name')
       .leftJoin('user_types as ut', 'ut.user_type_id', 'u.user_type_id')
+      .leftJoin('sex as s', 'code', 'sex')
+      .orderBy('u.user_id', 'DESC')
+
     // .limit(10)
   }
 
@@ -14,12 +17,14 @@ export class UserModel {
     let _query = '%' + query + '%';
 
     return db('users as u')
-      .select('u.user_id', 'u.is_active', 'u.username', 'u.first_name', 'u.last_name', 'ut.user_type_name')
+      .select('u.user_id', 'u.is_active', 'u.username', 'u.first_name', 's.code', 's.name', 'u.last_name', 'ut.user_type_name')
       .leftJoin('user_types as ut', 'ut.user_type_id', 'u.user_type_id')
+      .leftJoin('sex as s', 'code', 'sex')
       .where(w => {
         w.where('u.username', 'like', _query)
           .orWhere('u.first_name', 'like', _query)
           .orWhere('u.last_name', 'like', _query)
+          .orWhere('s.name', 'like', _query);
       })
       .limit(10)
   }
@@ -67,6 +72,11 @@ export class UserModel {
   getDetail(db: Knex, userId: any) {
     return db('users')
       .where('user_id', userId); // SELECT * FROM users WHERE user_id=xxx
+  }
+
+  getSex(db: Knex) {
+    return db('sex').select('code', 'name');
+
   }
 
 
